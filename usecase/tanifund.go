@@ -16,7 +16,7 @@ const (
 
 	taniFundProjectURL = "https://tanifund.com/project"
 	thirtyDaysTime     = 30 * 24 * time.Hour
-	waitingForFundID   = 5
+	waitingForFundID   = 5 // ID for "Menunggu Fundraising"
 )
 
 // TaniFundProjectGetter defines a contract to get TaniFund's projects.
