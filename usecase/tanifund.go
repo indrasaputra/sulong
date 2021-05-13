@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/indrasaputra/sulong/entity"
 )
@@ -9,6 +11,12 @@ import (
 const (
 	// DefaultNumberOfProject set to be 10 because it is not too many, not too few.
 	DefaultNumberOfProject = 10
+	// TimeUTCPlus7 derived from UTC+7 (Asia/Jakarta).
+	TimeUTCPlus7 = 7 * time.Hour
+
+	taniFundProjectURL = "https://tanifund.com/project"
+	thirtyDaysTime     = 30 * 24 * time.Hour
+	waitingForFundID   = 5
 )
 
 // TaniFundProjectGetter defines a contract to get TaniFund's projects.
@@ -59,12 +67,21 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	}
 
 	for _, project := range projects {
-		if !tpc.projectCache[project.ID] {
-			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, project); err != nil {
+		if project.Projectstatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
+			res := beautifyProject(project)
+			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, res); err != nil {
 				return err
 			}
 			tpc.projectCache[project.ID] = true
 		}
 	}
 	return nil
+}
+
+func beautifyProject(project *entity.Project) *entity.Project {
+	project.HumanPublishedAt = project.PublishedAt.Add(TimeUTCPlus7)
+	project.ProjectLink = fmt.Sprintf("%s/%s", taniFundProjectURL, project.URLSlug)
+	project.TargetFund = project.PricePerUnit * project.MaxUnit
+	project.Tenor = int(project.EndAt.Sub(project.StartAt) / thirtyDaysTime)
+	return project
 }
