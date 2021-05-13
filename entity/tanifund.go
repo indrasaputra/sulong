@@ -26,7 +26,7 @@ type Project struct {
 	ProjectStatus    *ProjectStatus `json:"projectStatus"`
 	HumanPublishedAt time.Time      `json:"humanPublishedAt"`
 	ProjectLink      string         `json:"projectLink"`
-	TargetFund       int            `json:"targetFund"`
+	TargetFund       string         `json:"targetFund"`
 	Tenor            int            `json:"tenor"`
 }
 

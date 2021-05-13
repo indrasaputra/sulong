@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
+
 	"github.com/indrasaputra/sulong/entity"
 )
 
@@ -40,6 +43,7 @@ type TaniFundProjectChecker struct {
 	recipientID     int
 	numberOfProject int
 	projectCache    map[string]bool
+	printer         *message.Printer
 }
 
 // NewTaniFundProjectChecker creates an instance of TaniFundProjectChecker.
@@ -51,6 +55,7 @@ func NewTaniFundProjectChecker(projectGetter TaniFundProjectGetter, notifier Tan
 		recipientID:     recipientID,
 		numberOfProject: DefaultNumberOfProject,
 		projectCache:    make(map[string]bool),
+		printer:         message.NewPrinter(language.Indonesian),
 	}
 }
 
@@ -68,7 +73,7 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 
 	for _, project := range projects {
 		if project.ProjectStatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
-			res := beautifyProject(project)
+			res := tpc.beautifyProject(project)
 			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, res); err != nil {
 				return err
 			}
@@ -78,10 +83,10 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	return nil
 }
 
-func beautifyProject(project *entity.Project) *entity.Project {
+func (tpc *TaniFundProjectChecker) beautifyProject(project *entity.Project) *entity.Project {
 	project.HumanPublishedAt = project.PublishedAt.Add(TimeUTCPlus7)
 	project.ProjectLink = fmt.Sprintf("%s/%s", taniFundProjectURL, project.URLSlug)
-	project.TargetFund = project.PricePerUnit * project.MaxUnit
+	project.TargetFund = tpc.printer.Sprint(project.PricePerUnit * project.MaxUnit)
 	project.Tenor = int(project.EndAt.Sub(project.StartAt) / thirtyDaysTime)
 	return project
 }
