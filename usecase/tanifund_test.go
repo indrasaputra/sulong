@@ -14,9 +14,10 @@ import (
 )
 
 var (
-	ctx       = context.Background()
-	errCustom = errors.New("error")
-	projects  = []*entity.Project{
+	ctx         = context.Background()
+	errCustom   = errors.New("error")
+	recipientID = 1
+	projects    = []*entity.Project{
 		{ID: "1"},
 		{ID: "2"},
 	}
@@ -54,7 +55,7 @@ func TestTaniFundProjectChecker_CheckAndNotify(t *testing.T) {
 	t.Run("notifier returns error", func(t *testing.T) {
 		exec := createTaniFundProjectCheckerExecutor(ctrl)
 		exec.getter.EXPECT().GetNewestProjects(ctx, usecase.DefaultNumberOfProject).Return(projects, nil)
-		exec.notifier.EXPECT().Notify(ctx, projects[0]).Return(errCustom)
+		exec.notifier.EXPECT().Notify(ctx, recipientID, projects[0]).Return(errCustom)
 
 		err := exec.checker.CheckAndNotify()
 
@@ -64,8 +65,8 @@ func TestTaniFundProjectChecker_CheckAndNotify(t *testing.T) {
 	t.Run("successfully checks and notify", func(t *testing.T) {
 		exec := createTaniFundProjectCheckerExecutor(ctrl)
 		exec.getter.EXPECT().GetNewestProjects(ctx, usecase.DefaultNumberOfProject).Return(projects, nil)
-		exec.notifier.EXPECT().Notify(ctx, projects[0]).Return(nil)
-		exec.notifier.EXPECT().Notify(ctx, projects[1]).Return(nil)
+		exec.notifier.EXPECT().Notify(ctx, recipientID, projects[0]).Return(nil)
+		exec.notifier.EXPECT().Notify(ctx, recipientID, projects[1]).Return(nil)
 
 		err := exec.checker.CheckAndNotify()
 
@@ -75,7 +76,7 @@ func TestTaniFundProjectChecker_CheckAndNotify(t *testing.T) {
 
 func TestTaniFundProjectChecker_SetNumberOfProject(t *testing.T) {
 	t.Run("successfully sets the number of project", func(t *testing.T) {
-		checker := usecase.NewTaniFundProjectChecker(nil, nil)
+		checker := usecase.NewTaniFundProjectChecker(nil, nil, recipientID)
 
 		assert.NotPanics(t, func() { checker.SetNumberOfProject(1) })
 	})
@@ -88,6 +89,6 @@ func createTaniFundProjectCheckerExecutor(ctrl *gomock.Controller) *TaniFundProj
 	return &TaniFundProjectCheckerExecutor{
 		getter:   getter,
 		notifier: notifier,
-		checker:  usecase.NewTaniFundProjectChecker(getter, notifier),
+		checker:  usecase.NewTaniFundProjectChecker(getter, notifier, recipientID),
 	}
 }

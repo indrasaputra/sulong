@@ -21,7 +21,7 @@ type TaniFundProjectGetter interface {
 // TaniFundProjectNotifier defines a contract to user about TaniFund's project.
 type TaniFundProjectNotifier interface {
 	// Notify notifies user about a project.
-	Notify(ctx context.Context, project *entity.Project) error
+	Notify(ctx context.Context, recipientID int, project *entity.Project) error
 }
 
 // TaniFundProjectChecker is responsible to check whether there is worthy new project to fund.
@@ -29,16 +29,18 @@ type TaniFundProjectNotifier interface {
 type TaniFundProjectChecker struct {
 	projectGetter   TaniFundProjectGetter
 	notifier        TaniFundProjectNotifier
+	recipientID     int
 	numberOfProject int
 	projectCache    map[string]bool
 }
 
 // NewTaniFundProjectChecker creates an instance of TaniFundProjectChecker.
 // By default, the number of project to be retrieved is DefaultNumberOfProject.
-func NewTaniFundProjectChecker(projectGetter TaniFundProjectGetter, notifier TaniFundProjectNotifier) *TaniFundProjectChecker {
+func NewTaniFundProjectChecker(projectGetter TaniFundProjectGetter, notifier TaniFundProjectNotifier, recipientID int) *TaniFundProjectChecker {
 	return &TaniFundProjectChecker{
 		projectGetter:   projectGetter,
 		notifier:        notifier,
+		recipientID:     recipientID,
 		numberOfProject: DefaultNumberOfProject,
 		projectCache:    make(map[string]bool),
 	}
@@ -58,7 +60,7 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 
 	for _, project := range projects {
 		if !tpc.projectCache[project.ID] {
-			if err := tpc.notifier.Notify(context.Background(), project); err != nil {
+			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, project); err != nil {
 				return err
 			}
 			tpc.projectCache[project.ID] = true
