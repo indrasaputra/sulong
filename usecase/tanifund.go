@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/indrasaputra/sulong/entity"
 )
@@ -9,6 +11,12 @@ import (
 const (
 	// DefaultNumberOfProject set to be 10 because it is not too many, not too few.
 	DefaultNumberOfProject = 10
+	// TimeUTCPlus7 derived from UTC+7 (Asia/Jakarta).
+	TimeUTCPlus7 = 7 * time.Hour
+
+	taniFundProjectURL = "https://tanifund.com/project"
+	thirtyDaysTime     = 30 * 24 * time.Hour
+	waitingForFundID   = 5 // ID for "Menunggu Fundraising"
 )
 
 // TaniFundProjectGetter defines a contract to get TaniFund's projects.
@@ -21,7 +29,7 @@ type TaniFundProjectGetter interface {
 // TaniFundProjectNotifier defines a contract to user about TaniFund's project.
 type TaniFundProjectNotifier interface {
 	// Notify notifies user about a project.
-	Notify(ctx context.Context, project *entity.Project) error
+	Notify(ctx context.Context, recipientID int, project *entity.Project) error
 }
 
 // TaniFundProjectChecker is responsible to check whether there is worthy new project to fund.
@@ -29,16 +37,18 @@ type TaniFundProjectNotifier interface {
 type TaniFundProjectChecker struct {
 	projectGetter   TaniFundProjectGetter
 	notifier        TaniFundProjectNotifier
+	recipientID     int
 	numberOfProject int
 	projectCache    map[string]bool
 }
 
 // NewTaniFundProjectChecker creates an instance of TaniFundProjectChecker.
 // By default, the number of project to be retrieved is DefaultNumberOfProject.
-func NewTaniFundProjectChecker(projectGetter TaniFundProjectGetter, notifier TaniFundProjectNotifier) *TaniFundProjectChecker {
+func NewTaniFundProjectChecker(projectGetter TaniFundProjectGetter, notifier TaniFundProjectNotifier, recipientID int) *TaniFundProjectChecker {
 	return &TaniFundProjectChecker{
 		projectGetter:   projectGetter,
 		notifier:        notifier,
+		recipientID:     recipientID,
 		numberOfProject: DefaultNumberOfProject,
 		projectCache:    make(map[string]bool),
 	}
@@ -57,12 +67,21 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	}
 
 	for _, project := range projects {
-		if !tpc.projectCache[project.ID] {
-			if err := tpc.notifier.Notify(context.Background(), project); err != nil {
+		if project.ProjectStatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
+			res := beautifyProject(project)
+			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, res); err != nil {
 				return err
 			}
 			tpc.projectCache[project.ID] = true
 		}
 	}
 	return nil
+}
+
+func beautifyProject(project *entity.Project) *entity.Project {
+	project.HumanPublishedAt = project.PublishedAt.Add(TimeUTCPlus7)
+	project.ProjectLink = fmt.Sprintf("%s/%s", taniFundProjectURL, project.URLSlug)
+	project.TargetFund = project.PricePerUnit * project.MaxUnit
+	project.Tenor = int(project.EndAt.Sub(project.StartAt) / thirtyDaysTime)
+	return project
 }

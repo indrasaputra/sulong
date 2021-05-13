@@ -74,15 +74,15 @@ func (m *MockTaniFundProjectNotifier) EXPECT() *MockTaniFundProjectNotifierMockR
 }
 
 // Notify mocks base method
-func (m *MockTaniFundProjectNotifier) Notify(ctx context.Context, project *entity.Project) error {
+func (m *MockTaniFundProjectNotifier) Notify(ctx context.Context, recipientID int, project *entity.Project) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Notify", ctx, project)
+	ret := m.ctrl.Call(m, "Notify", ctx, recipientID, project)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Notify indicates an expected call of Notify
-func (mr *MockTaniFundProjectNotifierMockRecorder) Notify(ctx, project interface{}) *gomock.Call {
+func (mr *MockTaniFundProjectNotifierMockRecorder) Notify(ctx, recipientID, project interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Notify", reflect.TypeOf((*MockTaniFundProjectNotifier)(nil).Notify), ctx, project)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Notify", reflect.TypeOf((*MockTaniFundProjectNotifier)(nil).Notify), ctx, recipientID, project)
 }

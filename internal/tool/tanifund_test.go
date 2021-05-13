@@ -13,20 +13,20 @@ import (
 )
 
 const (
-	url             = "http://localhost:8080/projects"
+	tanifundURL     = "http://localhost:8080/projects"
 	numberOfProject = 10
 )
 
 var (
 	ctx                   = context.Background()
-	invalidResponseClient = NewTestClient(func(req *http.Request) *http.Response {
+	invalidTaniFundClient = NewTestClient(func(req *http.Request) *http.Response {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{},
 			Body:       ioutil.NopCloser(bytes.NewBufferString(`OK`)),
 		}
 	})
-	validResponseClient = NewTestClient(func(req *http.Request) *http.Response {
+	validTaniFundClient = NewTestClient(func(req *http.Request) *http.Response {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{},
@@ -50,14 +50,14 @@ func NewTestClient(fn RoundTripFunc) *http.Client {
 
 func TestNewTaniFundCrawler(t *testing.T) {
 	t.Run("successfully create TaniFundCrawler", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(validResponseClient, url)
+		crawler := tool.NewTaniFundCrawler(validTaniFundClient, tanifundURL)
 		assert.NotNil(t, crawler)
 	})
 }
 
 func TestTaniFundCrawler_GetNewestProjects(t *testing.T) {
 	t.Run("upstream returns invalid JSON", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(invalidResponseClient, url)
+		crawler := tool.NewTaniFundCrawler(invalidTaniFundClient, tanifundURL)
 		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
 
 		assert.NotNil(t, err)
@@ -65,7 +65,7 @@ func TestTaniFundCrawler_GetNewestProjects(t *testing.T) {
 	})
 
 	t.Run("upstream returns valid JSON", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(validResponseClient, url)
+		crawler := tool.NewTaniFundCrawler(validTaniFundClient, tanifundURL)
 		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
 
 		assert.Nil(t, err)

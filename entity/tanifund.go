@@ -14,30 +14,24 @@ type Data struct {
 
 // Project defines the detail of TaniFund's project.
 type Project struct {
-	ID                string         `json:"id"`
-	Title             string         `json:"title"`
-	ShortDescription  string         `json:"shortDescription"`
-	PricePerUnit      int            `json:"pricePerUnit"`
-	StartAt           time.Time      `json:"startAt"`
-	EndAt             time.Time      `json:"endAt"`
-	PublishedAt       time.Time      `json:"publishedAt"`
-	CutoffAt          time.Time      `json:"cutoffAt"`
-	InterestPessimist int            `json:"interestPessimist"`
-	InterestTarget    int            `json:"interestTarget"`
-	InterestOptimist  int            `json:"interestOptimist"`
-	Grade             string         `json:"grade"`
-	URLSlug           string         `json:"urlSlug"`
-	IsHidden          int            `json:"isHidden"`
-	Projectstatus     *ProjectStatus `json:"projectStatus"`
-	ReturnPeriod      *ReturnPeriod  `json:"returnPeriod"`
+	ID               string         `json:"id"`
+	Title            string         `json:"title"`
+	PricePerUnit     int            `json:"pricePerUnit"`
+	MaxUnit          int            `json:"maxUnit"`
+	StartAt          time.Time      `json:"startAt"`
+	EndAt            time.Time      `json:"endAt"`
+	PublishedAt      time.Time      `json:"publishedAt"`
+	InterestTarget   int            `json:"interestTarget"`
+	URLSlug          string         `json:"urlSlug"`
+	ProjectStatus    *ProjectStatus `json:"projectStatus"`
+	HumanPublishedAt time.Time      `json:"humanPublishedAt"`
+	ProjectLink      string         `json:"projectLink"`
+	TargetFund       int            `json:"targetFund"`
+	Tenor            int            `json:"tenor"`
 }
 
 // ProjectStatus defines project's status.
 type ProjectStatus struct {
-	Description string `json:"description"`
-}
-
-// ReturnPeriod defines return period.
-type ReturnPeriod struct {
+	ID          int    `json:"id"`
 	Description string `json:"description"`
 }

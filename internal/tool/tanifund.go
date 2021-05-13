@@ -30,6 +30,11 @@ func (tfc *TaniFundCrawler) GetNewestProjects(ctx context.Context, numberOfProje
 	if err != nil {
 		return []*entity.Project{}, err
 	}
+	req.Header.Set("Authority", "tanifund.com")
+	req.Header.Set("Referer", "https://tanifund.com/projects")
+	req.Header.Set("Accept-Language", "id")
+	req.Header.Set("Accept", "application/json, text/plain, */*'")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36'")
 
 	resp, err := tfc.client.Do(req)
 	if err != nil {
