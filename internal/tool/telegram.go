@@ -14,15 +14,15 @@ import (
 const (
 	messageTemplateName = "TaniFund Project"
 	messageTemplate     = `
-	Proyek Baru!
+Proyek Baru!
 
-	{{.Title}}
-	Bunga {{.InterestTarget}}%
-	Dibuka {{.HumanPublishedAt}}
-	Target {{.TargetFund}}
-	Tenor {{.Tenor}} bulan
-	Link {{.ProjectLink}}
-	`
+{{.Title}}
+Bunga {{.InterestTarget}}%
+Dibuka {{.HumanPublishedAt}}
+Target {{.TargetFund}}
+Tenor {{.Tenor}} bulan
+Link {{.ProjectLink}}
+`
 )
 
 // TelegramMessage ...
