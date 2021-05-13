@@ -17,6 +17,10 @@ pretty: tidy format lint
 test:
 	go test -v -race ./...
 
+.PHONY: mockgen
+mockgen:
+	bin/generate-mock.sh
+
 .PHONY: vendor
 vendor:
 	env GO111MODULE=on go mod vendor
