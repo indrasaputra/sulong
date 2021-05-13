@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+.env
 sulong
 
 # Test binary, built with `go test -c`
