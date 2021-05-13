@@ -4,7 +4,6 @@ format:
 
 .PHONY: lint
 lint:
-	buf lint
 	golangci-lint run ./...
 
 .PHONY: tidy
