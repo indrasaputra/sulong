@@ -18,8 +18,9 @@ var (
 	errCustom   = errors.New("error")
 	recipientID = 1
 	projects    = []*entity.Project{
-		{ID: "1"},
-		{ID: "2"},
+		{ID: "1", ProjectStatus: &entity.ProjectStatus{ID: 5}},
+		{ID: "2", ProjectStatus: &entity.ProjectStatus{ID: 5}},
+		{ID: "3", ProjectStatus: &entity.ProjectStatus{ID: 3}},
 	}
 )
 

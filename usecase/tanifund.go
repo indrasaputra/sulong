@@ -67,7 +67,7 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	}
 
 	for _, project := range projects {
-		if project.Projectstatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
+		if project.ProjectStatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
 			res := beautifyProject(project)
 			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, res); err != nil {
 				return err
