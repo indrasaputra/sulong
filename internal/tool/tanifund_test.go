@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	tanifundURL     = "http://localhost:8080/projects"
+	taniFundURL     = "http://localhost:8080/projects"
 	numberOfProject = 10
 )
 
@@ -50,14 +50,14 @@ func NewTestClient(fn RoundTripFunc) *http.Client {
 
 func TestNewTaniFundCrawler(t *testing.T) {
 	t.Run("successfully create TaniFundCrawler", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(validTaniFundClient, tanifundURL)
+		crawler := tool.NewTaniFundCrawler(validTaniFundClient, taniFundURL)
 		assert.NotNil(t, crawler)
 	})
 }
 
 func TestTaniFundCrawler_GetNewestProjects(t *testing.T) {
 	t.Run("upstream returns invalid JSON", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(invalidTaniFundClient, tanifundURL)
+		crawler := tool.NewTaniFundCrawler(invalidTaniFundClient, taniFundURL)
 		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
 
 		assert.NotNil(t, err)
@@ -65,7 +65,7 @@ func TestTaniFundCrawler_GetNewestProjects(t *testing.T) {
 	})
 
 	t.Run("upstream returns valid JSON", func(t *testing.T) {
-		crawler := tool.NewTaniFundCrawler(validTaniFundClient, tanifundURL)
+		crawler := tool.NewTaniFundCrawler(validTaniFundClient, taniFundURL)
 		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
 
 		assert.Nil(t, err)

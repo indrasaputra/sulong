@@ -3,8 +3,9 @@ package config_test
 import (
 	"testing"
 
-	"github.com/indrasaputra/sulong/internal/config"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/indrasaputra/sulong/internal/config"
 )
 
 func TestNewConfig(t *testing.T) {

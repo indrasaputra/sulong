@@ -9,7 +9,7 @@
 
 ## Description
 
-Sulong is a simple application that crawls [TaniFund](https://tanifund.com/)'s projects, checks if there are new projects, then notifies user (me) about the new projects (if any) via [Telegram](https://telegram.org/).
+Sulong is a simple application that crawls [TaniFund](https://tanifund.com/)'s projects, checks if there is new project, then notifies user about the new project (if any) in [Telegram](https://telegram.org/) channel.
 
 ## Owner
 
