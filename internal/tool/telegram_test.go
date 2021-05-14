@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/indrasaputra/sulong/entity"
-
-	"github.com/indrasaputra/sulong/internal/tool"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/indrasaputra/sulong/entity"
+	"github.com/indrasaputra/sulong/internal/tool"
 )
 
 const (
