@@ -23,7 +23,7 @@ mockgen:
 
 .PHONY: vendor
 vendor:
-	env GO111MODULE=on go mod vendor
+	GO111MODULE=on go mod vendor
 
 .PHONY: cover
 cover:
@@ -38,7 +38,7 @@ coverhtml:
 
 .PHONY: compile
 compile:
-	env GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong cmd/main.go
+	GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong cmd/main.go
 
 .PHONY: docker-build
 docker-build:
