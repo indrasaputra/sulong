@@ -63,7 +63,7 @@ func TestTelegramBot_Notify(t *testing.T) {
 }
 
 func taniFundProjectEntity() *entity.Project {
-	data := `{"id":"54f0b448-1abf-4720-aba8-d890f13c762d","title":"Budidaya Nanas Malang - 2","pricePerUnit":100000,"maxUnit":2554,"startAt":"2021-05-19T17:00:00Z","endAt":"2021-11-19T16:59:00Z","publishedAt":"2021-05-14T12:00:00Z","interestTarget":15,"urlSlug":"malang-s-pineapple-cultivation-2","projectStatus":{"id":5,"description":"Menunggu Fundraising"},"humanPublishedAt":"2021-05-14T19:00:00Z","projectLink":"https://tanifund.com/project/malang-s-pineapple-cultivation-2","targetFund":255400000,"tenor":6}`
+	data := `{"id":"54f0b448-1abf-4720-aba8-d890f13c762d","title":"Budidaya Nanas Malang - 2","pricePerUnit":100000,"maxUnit":2554,"startAt":"2021-05-19T17:00:00Z","endAt":"2021-11-19T16:59:00Z","publishedAt":"2021-05-14T12:00:00Z","cutoffAt":"2021-05-15T12:00:00Z","interestTarget":15,"urlSlug":"malang-s-pineapple-cultivation-2","projectStatus":{"id":5,"description":"Menunggu Fundraising"},"humanPublishedAt":"Saturday, 14-May-21 19:00:00 UTC","humanCutoffAt":"Sunday, 15-May-21 19:00:00 UTC","projectLink":"https://tanifund.com/project/malang-s-pineapple-cultivation-2","targetFund":255400000,"tenor":6}`
 
 	var res entity.Project
 	_ = json.Unmarshal([]byte(data), &res)

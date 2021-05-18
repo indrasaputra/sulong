@@ -19,6 +19,7 @@ Proyek Baru!
 {{.Title}}
 Bunga {{.InterestTarget}}%
 Dibuka {{.HumanPublishedAt}}
+Ditutup {{.HumanCutoffAt}}
 Target Rp{{.TargetFund}}
 Tenor {{.Tenor}} bulan
 Link {{.ProjectLink}}
