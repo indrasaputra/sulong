@@ -21,10 +21,12 @@ type Project struct {
 	StartAt          time.Time      `json:"startAt"`
 	EndAt            time.Time      `json:"endAt"`
 	PublishedAt      time.Time      `json:"publishedAt"`
+	CutoffAt         time.Time      `json:"cutoffAt"`
 	InterestTarget   int            `json:"interestTarget"`
 	URLSlug          string         `json:"urlSlug"`
 	ProjectStatus    *ProjectStatus `json:"projectStatus"`
-	HumanPublishedAt time.Time      `json:"humanPublishedAt"`
+	HumanPublishedAt string         `json:"humanPublishedAt"`
+	HumanCutoffAt    string         `json:"humanCutoffAt"`
 	ProjectLink      string         `json:"projectLink"`
 	TargetFund       string         `json:"targetFund"`
 	Tenor            int            `json:"tenor"`

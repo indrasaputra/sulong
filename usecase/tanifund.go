@@ -20,6 +20,7 @@ const (
 	taniFundProjectURL = "https://tanifund.com/project"
 	thirtyDaysTime     = 30 * 24 * time.Hour
 	waitingForFundID   = 5 // ID for "Menunggu Fundraising"
+	fundraisingID      = 6 // ID for "Fundraising"
 )
 
 // TaniFundProjectGetter defines a contract to get TaniFund's projects.
@@ -72,7 +73,7 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	}
 
 	for _, project := range projects {
-		if project.ProjectStatus.ID == waitingForFundID && !tpc.projectCache[project.ID] {
+		if notStarted(project.ProjectStatus.ID) && !tpc.projectCache[project.ID] {
 			res := tpc.beautifyProject(project)
 			if err := tpc.notifier.Notify(context.Background(), tpc.recipientID, res); err != nil {
 				return err
@@ -83,8 +84,13 @@ func (tpc *TaniFundProjectChecker) CheckAndNotify() error {
 	return nil
 }
 
+func notStarted(id int) bool {
+	return id == waitingForFundID || id == fundraisingID
+}
+
 func (tpc *TaniFundProjectChecker) beautifyProject(project *entity.Project) *entity.Project {
-	project.HumanPublishedAt = project.PublishedAt.Add(TimeUTCPlus7)
+	project.HumanPublishedAt = project.PublishedAt.Add(TimeUTCPlus7).Format(time.RFC850)
+	project.HumanCutoffAt = project.CutoffAt.Add(TimeUTCPlus7).Format(time.RFC850)
 	project.ProjectLink = fmt.Sprintf("%s/%s", taniFundProjectURL, project.URLSlug)
 	project.TargetFund = tpc.printer.Sprint(project.PricePerUnit * project.MaxUnit)
 	project.Tenor = int(project.EndAt.Sub(project.StartAt) / thirtyDaysTime)
