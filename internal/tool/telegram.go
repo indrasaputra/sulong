@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"text/template"
 
@@ -84,5 +86,11 @@ func (tb *TelegramBot) Notify(ctx context.Context, recipientID int, project *ent
 		_ = resp.Body.Close()
 	}()
 
+	if resp.StatusCode != http.StatusOK {
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println(err)
+		log.Println(string(body))
+		return fmt.Errorf("response status code is %d", resp.StatusCode)
+	}
 	return nil
 }

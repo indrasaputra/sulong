@@ -20,6 +20,13 @@ const (
 )
 
 var (
+	invalidTelegramClient = NewTestClient(func(req *http.Request) *http.Response {
+		return &http.Response{
+			StatusCode: http.StatusForbidden,
+			Header:     http.Header{},
+			Body:       ioutil.NopCloser(bytes.NewBufferString(`Forbidden`)),
+		}
+	})
 	validTelegramClient = NewTestClient(func(req *http.Request) *http.Response {
 		return &http.Response{
 			StatusCode: http.StatusOK,
@@ -47,6 +54,14 @@ func TestTelegramBot_Notify(t *testing.T) {
 
 	t.Run("can't create request due to invalid url", func(t *testing.T) {
 		bot := tool.NewTelegramBot(validTelegramClient, "#$%&!*#)ll.com", telegramToken)
+
+		err := bot.Notify(ctx, telegramRecipientID, taniFundProjectEntity())
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("user forbids notification", func(t *testing.T) {
+		bot := tool.NewTelegramBot(invalidTelegramClient, telegramURL, telegramToken)
 
 		err := bot.Notify(ctx, telegramRecipientID, taniFundProjectEntity())
 
