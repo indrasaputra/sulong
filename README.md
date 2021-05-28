@@ -18,7 +18,7 @@ Sulong is a simple application that crawls [TaniFund](https://tanifund.com/)'s p
 ## Prerequisites
 
 To use this application, make sure you have a [Telegram Bot](https://telegram.org/faq#bots). 
-To avoid DDoS, the application will run once in an hour.
+To avoid DDoS, the application will run once in an hour by default. It can be changed via env configuration.
 
 ## How to Run
 
@@ -106,5 +106,5 @@ Currently, this project is deployed in one of my server. These are the steps I d
 - Run binary
 
     ```
-    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url ./sulong
+    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url SLEEP=60 ./sulong
     ```
