@@ -22,6 +22,7 @@ type TaniFund struct {
 type Config struct {
 	Telegram Telegram
 	TaniFund TaniFund
+	Sleep    int `env:"SLEEP,default=60"`
 }
 
 // NewConfig creates an instance of Config.
