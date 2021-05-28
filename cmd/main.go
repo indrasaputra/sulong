@@ -30,12 +30,13 @@ func main() {
 
 	checker := usecase.NewTaniFundProjectChecker(getter, notifier, cfg.Telegram.RecipientID)
 
+	sleep := time.Duration(cfg.Sleep) * time.Minute
 	for {
 		if err := checker.CheckAndNotify(); err != nil {
 			log.Printf("check and notify: %v", err)
 		} else {
 			log.Printf("success check and notify")
 		}
-		time.Sleep(1 * time.Hour)
+		time.Sleep(sleep)
 	}
 }
