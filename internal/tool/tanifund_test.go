@@ -26,6 +26,13 @@ var (
 			Body:       ioutil.NopCloser(bytes.NewBufferString(`OK`)),
 		}
 	})
+	emptyTaniFundClient = NewTestClient(func(req *http.Request) *http.Response {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     http.Header{},
+			Body:       ioutil.NopCloser(bytes.NewBufferString(`{}`)),
+		}
+	})
 	validTaniFundClient = NewTestClient(func(req *http.Request) *http.Response {
 		return &http.Response{
 			StatusCode: http.StatusOK,
@@ -61,6 +68,14 @@ func TestTaniFundCrawler_GetNewestProjects(t *testing.T) {
 		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
 
 		assert.NotNil(t, err)
+		assert.Empty(t, projects)
+	})
+
+	t.Run("upstream returns empty JSON", func(t *testing.T) {
+		crawler := tool.NewTaniFundCrawler(emptyTaniFundClient, taniFundURL)
+		projects, err := crawler.GetNewestProjects(ctx, numberOfProject)
+
+		assert.Nil(t, err)
 		assert.Empty(t, projects)
 	})
 
