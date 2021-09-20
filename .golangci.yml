@@ -1,5 +1,5 @@
 run:
-  timeout: 5m
+  timeout: 10m
 
 linters:
   enable:
@@ -12,12 +12,12 @@ linters:
     - exportloopref
     - exhaustive
     - funlen
+    - gocognit
     - goconst
     - gocritic
     - gocyclo
     - gofmt
     - goimports
-    - golint
     - gomnd
     - goprintffuncname
     - gosec
@@ -31,6 +31,7 @@ linters:
     - noctx
     - nolintlint
     - prealloc
+    - revive
     - rowserrcheck
     - staticcheck
     - structcheck
@@ -43,23 +44,25 @@ linters:
     - whitespace
 
 linters-settings:
+  dupl:
+    threshold: 200
+  exhaustive:
+    default-signifies-exhaustive: true
   funlen:
     lines: 70
     statements: 40
-  lll:
-    line-length: 200
+  gocognit:
+    min-complexity: 10
   govet:
     check-shadowing: true
-  golint:
-    min-confidence: 0
+  lll:
+    line-length: 200
 
 issues:
   exclude-use-default: false
-  exclude:
-    - should have a package comment, unless it's in another file for this package
   exclude-rules:
     - path: _test\.go
       linters:
-        - lll
-        - funlen
         - dupl
+        - funlen
+        - lll

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/indrasaputra/sulong/entity"
@@ -47,6 +48,11 @@ func (tfc *TaniFundCrawler) GetNewestProjects(ctx context.Context, numberOfProje
 	var result entity.TaniFund
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return []*entity.Project{}, err
+	}
+
+	if result.Data == nil {
+		log.Printf("got nil data for request: %s\n", url)
+		return []*entity.Project{}, nil
 	}
 	return result.Data.Items, nil
 }
