@@ -24,7 +24,7 @@ To avoid DDoS, the application will run once in an hour by default. It can be ch
 
 - Install Go
 
-    This project uses version 1.16. Follow [Golang installation guideline](https://golang.org/doc/install).
+    This project uses version 1.17. Follow [Golang installation guideline](https://golang.org/doc/install).
 
 - Create your Telegram bot
 
@@ -106,5 +106,5 @@ Currently, this project is deployed in one of my server. These are the steps I d
 - Run binary
 
     ```
-    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url SLEEP=15 ./sulong
+    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url SLEEP=15 PORT=8080 ./sulong
     ```

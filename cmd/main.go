@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -21,6 +22,11 @@ func main() {
 		return
 	}
 
+	go checkAndNotify(cfg)
+	_ = http.ListenAndServe(fmt.Sprintf(":%s", cfg.Port), nil)
+}
+
+func checkAndNotify(cfg *config.Config) {
 	client := &http.Client{
 		Timeout: timeout,
 	}
