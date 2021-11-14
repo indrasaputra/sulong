@@ -106,5 +106,5 @@ Currently, this project is deployed in one of my server. These are the steps I d
 - Run binary
 
     ```
-    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url SLEEP=60 ./sulong
+    $ TELEGRAM_RECIPIENT_ID=1 TELEGRAM_URL=url TELEGRAM_TOKEN=token TANIFUND_URL=url SLEEP=15 ./sulong
     ```
