@@ -40,11 +40,11 @@ coverhtml:
 
 .PHONY: compile.cli
 compile.cli:
-	GO111MODULE=on CGO_ENABLED=0 GOOS=$(OS) go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong cmd/cli/main.go
+	GO111MODULE=on CGO_ENABLED=0 GOOS=$(OS) go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong-cli cmd/cli/main.go
 
 .PHONY: compile.cron
 compile.cron:
-	GO111MODULE=on CGO_ENABLED=0 GOOS=$(OS) go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong cmd/cron/main.go
+	GO111MODULE=on CGO_ENABLED=0 GOOS=$(OS) go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o sulong-cron cmd/cron/main.go
 
 .PHONY: docker-build
 docker-build:
